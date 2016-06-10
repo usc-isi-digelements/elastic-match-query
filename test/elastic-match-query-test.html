@@ -1,0 +1,93 @@
+<!doctype html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+        <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="../../web-component-tester/browser.js"></script>
+
+        <!-- Import the element to test -->
+        <link rel="import" href="../elastic-match-query.html">
+    </head>
+    <body>
+        <!-- Use the document as a place to set up your fixtures. -->
+        <test-fixture id="elastic-match-query-fixture">
+            <template>
+                <elastic-match-query
+                    field="my.field">
+                </elastic-match-query>
+            </template>
+        </test-fixture>
+        <test-fixture id="elastic-match-query-fixture2">
+            <template>
+                <elastic-match-query
+                    id="eci2"
+                    field="my.field"
+                    label="mylabel"
+                    autobuild="true">
+                </elastic-match-query>
+            </template>
+        </test-fixture>
+
+        <script>
+            suite('<elastic-match-query>', function() {
+
+                var eci;
+                var eci2;
+
+                setup(function() {
+                    eci = fixture('elastic-match-query-fixture');
+                    eci2 = fixture('elastic-match-query-fixture2');
+                });
+
+                test('defines the field property', function () {
+                    assert.equal(eci.field, 'my.field');
+                });
+
+                test('sets label value to field value if not defined', function() {
+                    assert.equal(eci.labelValue, 'my.field');
+                });
+
+                test('properly sets the label if defined', function() {
+                    assert.equal(eci2.labelValue, 'mylabel');
+                    var label = document.querySelector('#eci2').querySelector(":scope label");
+                    assert.equal(label.textContent, 'mylabel');
+                });
+
+
+                test('correctly defaults autobuild', function() {
+                    assert.equal(eci.autobuild, false);
+                });
+
+                test('correctly sets autobuild', function() {
+                    assert.equal(eci2.autobuild, true);
+                });
+
+                test('triggers query build on input if autobuild is set', function() {
+                    expect(eci2.query).not.to.exist;
+                    eci2.value = "foo";
+                    expect(eci2.query).to.exist;
+                    expect(eci2.query.toJSON()).to.deep.equal(ejs.MatchQuery('my.field', 'foo').toJSON());
+                });
+
+                // test clear()
+                test('trigger query build', function(done) {
+                    var input = document.querySelector('#eci2').querySelector(":scope paper-input");
+                    expect(eci2.query).not.to.exist;
+                    eci2.value = "foo";
+                    expect(eci2.query).to.exist;
+                    expect(eci2.query.toJSON()).to.deep.equal(ejs.MatchQuery('my.field', 'foo').toJSON());
+
+                    eci2.clear();
+                    expect(input.value).to.not.exist;
+                    expect(eci2.query.toJSON()).to.deep.equal(ejs.MatchAllQuery().toJSON());
+                    done();
+
+                });
+
+            });
+        </script>
+    </body>
+</html>

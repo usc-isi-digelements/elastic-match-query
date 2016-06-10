@@ -1,0 +1,125 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../dig-common/dig-common.html">
+
+<!--
+An element which renders an input box and produces an elasticjs query based
+on the input value
+
+Example:
+
+        <elastic-match-query
+            field="field.path"
+            label-value="My Input"
+            value={{inputValue}}
+            query={{resultingQuery}}>
+            autobuild="true"
+        </elastic-match-query>
+
+@demo demo/index.html
+-->
+
+<dom-module id="elastic-match-query">
+    <style include="iron-flex iron-flex-alignment">
+    <style>
+        .container {
+            @apply(--layout-horizontal);
+            @apply(--layout-end);
+        }
+    </style>
+    <template>
+        <div class="layout horizontal">
+            <paper-input class="flex"
+                label="{{labelValue}}"
+                value="{{value::change}}"
+                id="myinput"
+            >
+            </paper-input>
+            <paper-icon-button icon="search" on-tap="build"></paper-icon-button>
+            <paper-icon-button icon="clear" on-tap="clear"></paper-icon-button>  
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'elastic-match-query',
+
+            properties: {
+                // The field which the resulting elasticjs query should
+                // be targetted against
+                field: {
+                    type: String
+                },
+
+                // The raw input string
+                value: {
+                    type: String,
+                    notify: true
+                },
+
+                // The resulting elasticjs query from this input
+                query: {
+                    type: Object,
+                    readOnly: true,
+                    notify: true
+                },
+
+                // Whether or not to automatically build the query on change of
+                // the value property or to wait for build to be manually called
+                autobuild: {
+                    type: Boolean,
+                    value: false
+                },
+
+                // Specifies the label for the input field. If not specified
+                // the field will be used
+                label: {
+                    type: String,
+                    value: ''
+                },
+
+                // The computed label; derived from the label or the field
+                labelValue: {
+                    type: String,
+                    readOnly: true,
+                    computed: 'resolveLabelValue(field, label)'
+                }
+            },
+
+            observers: [
+                'buildQuery(field, value)'
+            ],
+
+            buildQuery: function(field, value) {
+                if(this.autobuild && this.field) {
+                    this.build();
+                }
+            },
+
+            /**
+             * Builds the elasticjs query based on the input field value
+            */
+            build: function() {
+                if(this.value) {
+                    this._setQuery(ejs.MatchQuery(this.field, this.value));
+                }
+                else {
+                    this._setQuery(ejs.MatchAllQuery());
+                }
+            },
+
+            resolveLabelValue: function(field, label) {
+                return label || field;
+            },
+
+            //Clears the input value and the resulting query
+            clear: function() {
+                this.value = null;
+                this.build();
+            }
+        });
+    </script>
+</dom-module>
