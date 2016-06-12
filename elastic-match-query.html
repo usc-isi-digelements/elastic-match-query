@@ -2,8 +2,8 @@
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
-<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../dig-common/dig-common.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 
 <!--
 An element which renders an input box and produces an elasticjs query based
@@ -23,16 +23,18 @@ Example:
 -->
 
 <dom-module id="elastic-match-query">
-    <style include="iron-flex iron-flex-alignment">
     <style>
         .container {
             @apply(--layout-horizontal);
-            @apply(--layout-end);
+        }
+
+        paper-input {
+          @apply(--layout-flex);
         }
     </style>
     <template>
-        <div class="layout horizontal">
-            <paper-input class="flex"
+        <div class="container">
+            <paper-input
                 label="{{labelValue}}"
                 value="{{value::change}}"
                 id="myinput"
