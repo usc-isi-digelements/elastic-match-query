@@ -37,9 +37,10 @@
                 var eci;
                 var eci2;
 
-                setup(function() {
+                setup(function(done) {
                     eci = fixture('elastic-match-query-fixture');
                     eci2 = fixture('elastic-match-query-fixture2');
+                    flush(done);
                 });
 
                 test('defines the field property', function () {
@@ -68,6 +69,17 @@
                     assert.equal(eci2.autobuild, true);
                 });
 
+                test('necessary DOM elements are present', function() {
+                    expect(eci.$$('paper-input')).to.exist;
+                    expect(eci.$$('paper-input').label).to.equal(eci.labelValue);
+                    expect(eci2.$$('paper-input').label).to.equal(eci2.labelValue);
+                    expect(eci.$$('paper-input').id).to.equal('myinput');
+                    expect(eci.$$('paper-icon-button[icon="search"]')).to.exist;
+                    expect(eci.$$('paper-icon-button[icon="search"]').onTap).to.deep.equal(eci.build());
+                    expect(eci.$$('paper-icon-button[icon="clear"]')).to.exist;
+                    expect(eci.$$('paper-icon-button[icon="clear"]').onTap).to.deep.equal(eci.clear());
+                });
+
                 test('triggers query build on input if autobuild is set', function() {
                     expect(eci2.query).not.to.exist;
                     eci2.value = 'foo';
@@ -82,14 +94,14 @@
                 });
 
                 test('trigger query build and clear query', function(done) {
-                    var input = document.querySelector('#eci2').querySelector(":scope paper-input");
                     expect(eci2.query).not.to.exist;
                     eci2.value = 'foo';
+                    expect(eci2.$$('paper-input').value).to.equal(eci2.value);
                     expect(eci2.query).to.exist;
                     expect(eci2.query.toJSON()).to.deep.equal(ejs.MatchQuery('my.field', 'foo').toJSON());
 
                     eci2.clear();
-                    expect(input.value).to.not.exist;
+                    expect(eci2.$$('paper-input').value).to.not.exist;
                     expect(eci2.query.toJSON()).to.deep.equal(ejs.MatchAllQuery().toJSON());
                     done();
                 });
