@@ -46,16 +46,19 @@
                     assert.equal(eci.field, 'my.field');
                 });
 
-                test('sets label value to field value if not defined', function() {
+                test('label property should be empty string if not defined by user', function () {
+                    assert.equal(eci.label, '');
+                });
+
+                test('sets labelValue to field value if not defined by user', function() {
                     assert.equal(eci.labelValue, 'my.field');
                 });
 
-                test('properly sets the label if defined', function() {
+                test('properly sets labelValue if label is defined', function() {
                     assert.equal(eci2.labelValue, 'mylabel');
                     var label = document.querySelector('#eci2').querySelector(":scope label");
                     assert.equal(label.textContent, 'mylabel');
                 });
-
 
                 test('correctly defaults autobuild', function() {
                     assert.equal(eci.autobuild, false);
@@ -67,16 +70,21 @@
 
                 test('triggers query build on input if autobuild is set', function() {
                     expect(eci2.query).not.to.exist;
-                    eci2.value = "foo";
+                    eci2.value = 'foo';
                     expect(eci2.query).to.exist;
                     expect(eci2.query.toJSON()).to.deep.equal(ejs.MatchQuery('my.field', 'foo').toJSON());
                 });
 
-                // test clear()
-                test('trigger query build', function(done) {
+                test('does not trigger query build if autobuild is false', function() {
+                    expect(eci.query).not.to.exist;
+                    eci.value = 'foo';
+                    expect(eci.query).not.to.exist;
+                });
+
+                test('trigger query build and clear query', function(done) {
                     var input = document.querySelector('#eci2').querySelector(":scope paper-input");
                     expect(eci2.query).not.to.exist;
-                    eci2.value = "foo";
+                    eci2.value = 'foo';
                     expect(eci2.query).to.exist;
                     expect(eci2.query.toJSON()).to.deep.equal(ejs.MatchQuery('my.field', 'foo').toJSON());
 
@@ -84,9 +92,7 @@
                     expect(input.value).to.not.exist;
                     expect(eci2.query.toJSON()).to.deep.equal(ejs.MatchAllQuery().toJSON());
                     done();
-
                 });
-
             });
         </script>
     </body>
