@@ -1,18 +1,13 @@
-<!doctype html>
-
 <html>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-
         <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
         <script src="../../web-component-tester/browser.js"></script>
-
-        <!-- Import the element to test -->
         <link rel="import" href="../elastic-match-query.html">
     </head>
+
     <body>
-        <!-- Use the document as a place to set up your fixtures. -->
         <test-fixture id="elastic-match-query-fixture">
             <template>
                 <elastic-match-query
@@ -20,6 +15,7 @@
                 </elastic-match-query>
             </template>
         </test-fixture>
+
         <test-fixture id="elastic-match-query-fixture2">
             <template>
                 <elastic-match-query
@@ -33,7 +29,6 @@
 
         <script>
             suite('<elastic-match-query>', function() {
-
                 var eci;
                 var eci2;
 

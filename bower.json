@@ -1,32 +1,29 @@
 {
   "name": "elastic-match-query",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "authors": [
     "Next Century Corporation"
   ],
-  "description": "",
+  "description": "A Polymer Element which renders an input box and produces an elasticjs query based on the input value.",
   "keywords": [
     "web-component",
     "polymer",
-    "seed"
+    "elastic.js"
   ],
-  "main": "elastic-client-input.html",
+  "main": "elastic-match-query.html",
   "license": "http://polymer.github.io/LICENSE.txt",
-  "homepage": "https://github.com/DigElements/elastic-client-input",
+  "homepage": "https://github.com/DigElements/elastic-match-query",
   "ignore": [
     "/.*",
     "/test/"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.2.0",
-    "paper-elements": "PolymerElements/paper-elements#^1.0.1",
-    "lodash": "4.6.1",
-    "elastic.js": "1.2.0",
-    "paper-icon-button": "^1.0.7",
-    "dig-common": "DigElements/dig-common#^0.0.4"
+    "polymer": "Polymer/polymer#^1.7.0",
+    "paper-elements": "PolymerElements/paper-elements#^1.0.7",
+    "elastic.js": "DigElements/elastic.js#6639a1030eb071fb762bcdd742fdbf037fb57b24"
   },
   "devDependencies": {
-    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
-    "web-component-tester": "^4.0.0"
+    "iron-component-page": "PolymerElements/iron-component-page#^1.1.7",
+    "web-component-tester": "^5.0.0"
   }
 }
