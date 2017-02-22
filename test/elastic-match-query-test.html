@@ -62,12 +62,12 @@ limitations under the License.
                     assert.equal(eci.label, '');
                 });
 
-                test('sets labelValue to field value if not defined by user', function() {
-                    assert.equal(eci.labelValue, 'my.field');
+                test('sets _labelValue to field value if not defined by user', function() {
+                    assert.equal(eci._labelValue, 'my.field');
                 });
 
-                test('properly sets labelValue if label is defined', function() {
-                    assert.equal(eci2.labelValue, 'mylabel');
+                test('properly sets _labelValue if label is defined', function() {
+                    assert.equal(eci2._labelValue, 'mylabel');
                     var label = document.querySelector('#eci2').querySelector(":scope label");
                     assert.equal(label.textContent, 'mylabel');
                 });
@@ -82,9 +82,9 @@ limitations under the License.
 
                 test('necessary DOM elements are present', function() {
                     expect(eci.$$('paper-input')).to.exist;
-                    expect(eci.$$('paper-input').label).to.equal(eci.labelValue);
-                    expect(eci2.$$('paper-input').label).to.equal(eci2.labelValue);
-                    expect(eci.$$('paper-input').id).to.equal('myinput');
+                    expect(eci.$$('paper-input').label).to.equal(eci._labelValue);
+                    expect(eci2.$$('paper-input').label).to.equal(eci2._labelValue);
+                    expect(eci.$$('paper-input').id).to.equal('myInput');
                     expect(eci.$$('paper-icon-button[icon="search"]')).to.exist;
                     expect(eci.$$('paper-icon-button[icon="search"]').onTap).to.deep.equal(eci.build());
                     expect(eci.$$('paper-icon-button[icon="clear"]')).to.exist;

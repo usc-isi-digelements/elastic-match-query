@@ -26,10 +26,10 @@ A Polymer Element which renders an input box and produces an elasticjs query bas
 ```html
 <elastic-match-query
   field="field.path"
-  label-value="My Input"
+  label="My Input"
   value={{inputValue}}
-  query={{resultingQuery}}>
-  autobuild="true"
+  query={{resultingQuery}}
+  autobuild="true">
 </elastic-match-query>
 ```
 
@@ -50,9 +50,9 @@ A Polymer Element which renders an input box and produces an elasticjs query bas
     <template>
         <div class="container">
             <paper-input
-                label="{{labelValue}}"
+                label="{{_labelValue}}"
                 value="{{value::change}}"
-                id="myinput">
+                id="myInput">
             </paper-input>
             <paper-icon-button icon="search" on-tap="build"></paper-icon-button>
             <paper-icon-button icon="clear" on-tap="clear"></paper-icon-button>  
@@ -134,7 +134,7 @@ A Polymer Element which renders an input box and produces an elasticjs query bas
                  *
                  * @type {String}
                  */
-                labelValue: {
+                _labelValue: {
                     type: String,
                     readOnly: true,
                     computed: '_resolveLabelValue(field, label)'
@@ -142,20 +142,8 @@ A Polymer Element which renders an input box and produces an elasticjs query bas
             },
 
             observers: [
-                'buildQuery(field, value)'
+                '_buildQuery(field, value)'
             ],
-
-            /**
-             * Builds the elasticjs query based on the field and value if autobuild is true.
-             *
-             * @param {String} field
-             * @param {String} value
-             */
-            buildQuery: function(field, value) {
-                if(this.autobuild && this.field) {
-                    this.build();
-                }
-            },
 
             /**
              * Builds the elasticjs query based on the field and value.
@@ -170,6 +158,26 @@ A Polymer Element which renders an input box and produces an elasticjs query bas
             },
 
             /**
+             * Clears the input value and the resulting query.
+             */
+            clear: function() {
+                this.value = null;
+                this.build();
+            },
+
+            /**
+             * Builds the elasticjs query based on the field and value if autobuild is true.
+             *
+             * @param {String} field
+             * @param {String} value
+             */
+            _buildQuery: function(field, value) {
+                if(this.autobuild && this.field) {
+                    this.build();
+                }
+            },
+
+            /**
              * Returns the label value.
              *
              * @param {String} field
@@ -179,14 +187,6 @@ A Polymer Element which renders an input box and produces an elasticjs query bas
              */
             _resolveLabelValue: function(field, label) {
                 return label || field;
-            },
-
-            /**
-             * Clears the input value and the resulting query.
-             */
-            clear: function() {
-                this.value = null;
-                this.build();
             }
         });
     </script>
