@@ -128,11 +128,10 @@ A Polymer Element which renders an input box and produces an elasticjs query bas
                 },
 
                 /**
-                 * (Output)
-                 *
                  * The computed label derived from the label or the field.
                  *
                  * @type {String}
+                 * @private
                  */
                 _labelValue: {
                     type: String,
@@ -170,6 +169,7 @@ A Polymer Element which renders an input box and produces an elasticjs query bas
              *
              * @param {String} field
              * @param {String} value
+             * @private
              */
             _buildQuery: function(field, value) {
                 if(this.autobuild && this.field) {
