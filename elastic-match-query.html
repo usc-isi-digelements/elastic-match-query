@@ -15,9 +15,10 @@ limitations under the License.
 -->
 
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../paper-input/paper-input.html">
-<script src="../elastic.js/dist/elastic.js"></script>
+<link rel="import" href="../elasticjs-import/elasticjs.html">
 
 <!--
 A Polymer Element which renders an input box and produces an elasticjs query based on the input value.
@@ -27,8 +28,8 @@ A Polymer Element which renders an input box and produces an elasticjs query bas
 <elastic-match-query
   field="field.path"
   label="My Input"
-  value={{inputValue}}
-  query={{resultingQuery}}
+  value="{{inputValue}}"
+  query="{{resultingQuery}}"
   autobuild="true">
 </elastic-match-query>
 ```
@@ -37,157 +38,149 @@ A Polymer Element which renders an input box and produces an elasticjs query bas
 -->
 
 <dom-module id="elastic-match-query">
-    <style>
-        .container {
-            @apply(--layout-horizontal);
+  <style include="iron-flex"></style>
+  <template>
+    <div class="layout horizontal">
+      <paper-input
+        class="flex"
+        label="{{_labelValue}}"
+        value="{{value::change}}"
+        id="myInput">
+      </paper-input>
+      <paper-icon-button icon="search" on-tap="build"></paper-icon-button>
+      <paper-icon-button icon="clear" on-tap="clear"></paper-icon-button>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'elastic-match-query',
+
+      properties: {
+        /**
+         * (Required)
+         *
+         * The query field.
+         *
+         * @type {String}
+         */
+        field: {
+          type: String
+        },
+
+        /**
+         * (Output)
+         *
+         * The text from the paper-input.
+         *
+         * @type {String}
+         */
+        value: {
+          type: String,
+          notify: true
+        },
+
+        /**
+         * (Output)
+         *
+         * The elasticjs query object.
+         *
+         * @type {Object}
+         */
+        query: {
+          type: Object,
+          readOnly: true,
+          notify: true
+        },
+
+        /**
+         * (Optional)
+         *
+         * Whether or not to automatically build the query on change of
+         * the value property or to wait for build to be manually called.
+         *
+         * @type {Boolean}
+         * @default false
+         */
+        autobuild: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * (Optional)
+         *
+         * Specifies the label for the input field. If not specified the field will be used.
+         *
+         * @type {String}
+         * @default ''
+         */
+        label: {
+          type: String,
+          value: ''
+        },
+
+        /**
+         * The computed label derived from the label or the field.
+         *
+         * @type {String}
+         * @private
+         */
+        _labelValue: {
+          type: String,
+          readOnly: true,
+          computed: '_resolveLabelValue(field, label)'
         }
+      },
 
-        paper-input {
-          @apply(--layout-flex);
+      observers: [
+        '_buildQuery(field, value)'
+      ],
+
+      /**
+       * Builds the elasticjs query based on the field and value.
+       */
+      build: function() {
+        if(this.value) {
+          this._setQuery(ejs.MatchQuery(this.field, this.value));
         }
-    </style>
+        else {
+          this._setQuery(ejs.MatchAllQuery());
+        }
+      },
 
-    <template>
-        <div class="container">
-            <paper-input
-                label="{{_labelValue}}"
-                value="{{value::change}}"
-                id="myInput">
-            </paper-input>
-            <paper-icon-button icon="search" on-tap="build"></paper-icon-button>
-            <paper-icon-button icon="clear" on-tap="clear"></paper-icon-button>  
-        </div>
-    </template>
+      /**
+       * Clears the input value and the resulting query.
+       */
+      clear: function() {
+        this.value = null;
+        this.build();
+      },
 
-    <script>
-        Polymer({
-            is: 'elastic-match-query',
+      /**
+       * Builds the elasticjs query based on the field and value if autobuild is true.
+       *
+       * @param {String} field
+       * @param {String} value
+       * @private
+       */
+      _buildQuery: function(field, value) {
+        if(this.autobuild && this.field) {
+          this.build();
+        }
+      },
 
-            properties: {
-                /**
-                 * (Required)
-                 *
-                 * The query field.
-                 *
-                 * @type {String}
-                 */
-                field: {
-                    type: String
-                },
-
-                /**
-                 * (Output)
-                 *
-                 * The text from the paper-input.
-                 *
-                 * @type {String}
-                 */
-                value: {
-                    type: String,
-                    notify: true
-                },
-
-                /**
-                 * (Output)
-                 *
-                 * The elasticjs query object.
-                 *
-                 * @type {Object}
-                 */
-                query: {
-                    type: Object,
-                    readOnly: true,
-                    notify: true
-                },
-
-                /**
-                 * (Optional)
-                 *
-                 * Whether or not to automatically build the query on change of
-                 * the value property or to wait for build to be manually called.
-                 *
-                 * @type {Boolean}
-                 * @default false
-                 */
-                autobuild: {
-                    type: Boolean,
-                    value: false
-                },
-
-                /**
-                 * (Optional)
-                 *
-                 * Specifies the label for the input field. If not specified the field will be used.
-                 *
-                 * @type {String}
-                 * @default ''
-                 */
-                label: {
-                    type: String,
-                    value: ''
-                },
-
-                /**
-                 * The computed label derived from the label or the field.
-                 *
-                 * @type {String}
-                 * @private
-                 */
-                _labelValue: {
-                    type: String,
-                    readOnly: true,
-                    computed: '_resolveLabelValue(field, label)'
-                }
-            },
-
-            observers: [
-                '_buildQuery(field, value)'
-            ],
-
-            /**
-             * Builds the elasticjs query based on the field and value.
-             */
-            build: function() {
-                if(this.value) {
-                    this._setQuery(ejs.MatchQuery(this.field, this.value));
-                }
-                else {
-                    this._setQuery(ejs.MatchAllQuery());
-                }
-            },
-
-            /**
-             * Clears the input value and the resulting query.
-             */
-            clear: function() {
-                this.value = null;
-                this.build();
-            },
-
-            /**
-             * Builds the elasticjs query based on the field and value if autobuild is true.
-             *
-             * @param {String} field
-             * @param {String} value
-             * @private
-             */
-            _buildQuery: function(field, value) {
-                if(this.autobuild && this.field) {
-                    this.build();
-                }
-            },
-
-            /**
-             * Returns the label value.
-             *
-             * @param {String} field
-             * @param {String} label
-             * @return {String}
-             * @private
-             */
-            _resolveLabelValue: function(field, label) {
-                return label || field;
-            }
-        });
-    </script>
+      /**
+       * Returns the label value.
+       *
+       * @param {String} field
+       * @param {String} label
+       * @return {String}
+       * @private
+       */
+      _resolveLabelValue: function(field, label) {
+        return label || field;
+      }
+    });
+  </script>
 </dom-module>

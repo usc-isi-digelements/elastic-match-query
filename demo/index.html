@@ -15,72 +15,71 @@ limitations under the License.
 -->
 
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-  <title>elastic-match-query Demo</title>
-  <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
-  <link rel="import" href="../elastic-match-query.html">
-  <link rel="import" href="../../paper-toolbar/paper-toolbar.html">
-  <link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
-  <style is="custom-style" include="iron-flex iron-flex-factors"></style>
-  <style is="custom-style">
-    :root {
-      --paper-input-container-color: #dddddd;
-      --paper-input-container-input-color: #ffffff;
-      --paper-input-container-focus-color: #ffffff;
-    }
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>elastic-match-query Demo</title>
+    <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="../elastic-match-query.html">
+    <link rel="import" href="../../paper-toolbar/paper-toolbar.html">
+    <link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
+    <style is="custom-style" include="iron-flex iron-flex-factors"></style>
+    <style is="custom-style">
+      :root {
+        --paper-input-container-color: #dddddd;
+        --paper-input-container-input-color: #ffffff;
+        --paper-input-container-focus-color: #ffffff;
+      }
 
-    paper-toolbar {
-      --paper-toolbar-background: #263238;
-    }
-  </style>
-</head>
-<body unresolved>
-<template is="dom-bind" id="demo">
-  <paper-toolbar mode="waterfall">
-    <elastic-match-query class="flex"
-      label="Text Input"
-      field="foo.bar"
-      value="{{val}}"
-      query="{{ejsQuery}}"
-      autobuild="true"
-    ></elastic-match-query>            
-  </paper-toolbar>
+      paper-toolbar {
+        --paper-toolbar-background: #263238;
+      }
+    </style>
+  </head>
+  <body unresolved>
+    <template is="dom-bind" id="demo">
+      <paper-toolbar mode="waterfall">
+        <elastic-match-query class="flex"
+          label="Text Input"
+          field="foo.bar"
+          value="{{val}}"
+          query="{{ejsQuery}}"
+          autobuild="true">
+        </elastic-match-query>
+      </paper-toolbar>
 
+      <p><span>Input: </span>{{val}}</p>
+      <p><span>Query: </span>{{toJSON(ejsQuery)}}</p>
 
-  <p><span>Input: </span>{{val}}</p>
-  <p><span>Query: </span>{{toJSON(ejsQuery)}}</p>
+      <br><hr><br>
 
-  <br><hr><br>
+      <paper-toolbar>
+        <elastic-match-query
+          id="input2"
+          field="my.field"
+          value="{{val2}}"
+          query="{{ejsQuery2}}">
+        </elastic-match-query>
+      </paper-toolbar>
 
-  <paper-toolbar>
-  <elastic-match-query
-    id="input2"
-    field="my.field"
-    value="{{val2}}"
-    query="{{ejsQuery2}}"
-  ></elastic-match-query>    
-  </paper-toolbar>
+      <button onclick="callBuild()">OK</button>
 
-  <button onclick="callBuild()">OK</button>
+      <p><span>Input: </span>{{val2}}</p>
+      <p><span>Query: </span>{{toJSON(ejsQuery2)}}</p>
+    </template>
 
-  <p><span>Input: </span>{{val2}}</p>
-  <p><span>Query: </span>{{toJSON(ejsQuery2)}}</p>
-</template>
-
-<script>
-    (function(document) {
+    <script>
+      (function(document) {
         var demo = document.querySelector('#demo');
 
         demo.toJSON = function(ejs) {
-            return JSON.stringify(ejs);
+          return JSON.stringify(ejs);
         };
-    })(document);
+      })(document);
 
-    function callBuild() {
+      function callBuild() {
         document.getElementById('input2').build();
-    }
-</script>
-</body>
+      }
+    </script>
+  </body>
 </html>

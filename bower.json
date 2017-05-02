@@ -1,7 +1,7 @@
 {
   "name": "elastic-match-query",
   "description": "A Polymer Element which renders an input box and produces an elasticjs query based on the input value.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "authors": ["Next Century Corporation"],
   "license": "Apache-2.0",
   "keywords": [
@@ -10,7 +10,6 @@
     "elastic.js"
   ],
   "main": "elastic-match-query.html",
-  "license": "http://polymer.github.io/LICENSE.txt",
   "homepage": "https://github.com/DigElements/elastic-match-query",
   "ignore": [
     "/.*",
@@ -18,8 +17,9 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.7.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#1.3.1",
     "paper-elements": "PolymerElements/paper-elements#^1.0.7",
-    "elastic.js": "DigElements/elastic.js#6639a1030eb071fb762bcdd742fdbf037fb57b24"
+    "elasticjs-import": "DigElements/elasticjs-import#~1.0.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.1.7",

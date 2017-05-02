@@ -7,9 +7,9 @@ A Polymer Element which renders an input box and produces an elasticjs query bas
 <elastic-match-query
   field="field.path"
   label-value="My Input"
-  value={{inputValue}}
-  query={{resultingQuery}}>
-  autobuild="true"
+  value="{{inputValue}}"
+  query="{{resultingQuery}}"
+  autobuild="true">
 </elastic-match-query>
 ```
 
