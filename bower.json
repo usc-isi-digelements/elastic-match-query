@@ -10,7 +10,7 @@
     "elastic.js"
   ],
   "main": "elastic-match-query.html",
-  "homepage": "https://github.com/DigElements/elastic-match-query",
+  "homepage": "https://github.com/usc-isi-digelements/elastic-match-query",
   "ignore": [
     "/.*",
     "/test/"
@@ -19,7 +19,7 @@
     "polymer": "Polymer/polymer#^1.7.0",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#1.3.1",
     "paper-elements": "PolymerElements/paper-elements#^1.0.7",
-    "elasticjs-import": "DigElements/elasticjs-import#~1.0.1"
+    "elasticjs-import": "usc-isi-digelements/elasticjs-import#~1.0.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.1.7",
